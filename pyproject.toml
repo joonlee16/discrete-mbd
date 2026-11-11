@@ -1,0 +1,25 @@
+[project]
+name = "discrete-mbd"
+version = "0.1.0"
+description = "Discrete Model-Based Diffusion: sampling-based, zeroth-order discrete optimization in JAX"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "jax>=0.11",
+    "numpy>=2.0",
+]
+
+[project.optional-dependencies]
+# GPU support. Pick the extra that matches your CUDA driver: uv sync --extra cuda13
+cuda13 = ["jax[cuda13]>=0.11"]
+cuda12 = ["jax[cuda12]>=0.11"]
+# Gurobi reference solver (the "Gurobi" method in run.py). Needs a Gurobi license.
+gurobi = ["gurobipy>=13"]
+
+[tool.uv]
+# The repository is a set of scripts, not an installable package.
+package = false
+# The two CUDA extras install different JAX plugins and cannot be combined.
+conflicts = [
+    [{ extra = "cuda12" }, { extra = "cuda13" }],
+]
